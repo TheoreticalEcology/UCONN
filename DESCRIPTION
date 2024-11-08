@@ -1,0 +1,28 @@
+Package: UCONN
+Type: Package
+Title: What the Package Does (Title Case)
+Version: 0.1.0
+Authors@R: 
+    c(person(given = "Maximilian",
+             family = "Pichler",
+             role = c("aut", "cre"),
+             email = "maximilian.pichler@biologie.uni-regensburg.de",
+             comment = c(ORCID = "0000-0003-2252-8327")),
+      person(given = "Florian",
+             family = "Hartig",
+             role = "aut",
+             email = "florian.hartig@biologie.uni-regensburg.de",
+             comment = c(ORCID = "0000-0002-6255-9059")))
+Maintainer: The package maintainer <yourself@somewhere.net>
+Description: More about what it does (maybe more than one line)
+    Use four spaces when indenting paragraphs within the Description.
+License: AGPL (>= 3)
+Encoding: UTF-8
+LazyData: true
+Imports: 
+    coro,
+    torch
+Suggests: 
+    testthat (>= 3.0.0)
+Config/testthat/edition: 3
+RoxygenNote: 7.3.2
