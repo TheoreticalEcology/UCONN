@@ -42,19 +42,20 @@ uconn = function(Y,
                  architecture = c(50, 20, 10),
                  latent_dim = 2L,
                  response = c("binary", "regression"),
-                 KLD_weight = 5.0
+                 KLD_weight = 2.0
 ) {
 
   out = list()
 
-  X = stats::model.matrix(~0+., data = data.frame(X)) # onehot encode factors
+  if(!is.null(X)) X = stats::model.matrix(~0+., data = data.frame(X)) # onehot encode factors
 
   model = cVAE(Y = ncol(Y), Yc = ncol(X), hidden = architecture, latent_dim = latent_dim)
   model$fit(Y = Y, Yc = X, epochs = iterations, l2 = l2, KLD_weight = KLD_weight, lr = learning_rate, response = response)
 
   out$latent = model$predict(Y, X, type = "latent")
   if(!is.null(X)) out$importance = get_importance(model, Y, X, out$latent, )
-  out$model = torch::torch_serialize(model)
+  out$model = model
+  out$model_serialized = torch::torch_serialize(model)
   class(out) = "uconn"
   return(out)
 }
@@ -85,7 +86,7 @@ plot.uconn = function(x, ...) {
   pred = x$latent
   pred = apply(pred, 2, function(x) scale(x, scale = FALSE))
   plot(pred, cex = 0.0001, xlab = "Lat dim 1", ylab = "Lat dim 2")
-  text(pred, labels = 1:100, col = "darkgrey")
+  text(pred, labels = 1:nrow(x$latent), col = "darkgrey")
   # if(!is.null(x$importance)) {
   #   scale_factor = 0.5*(max(abs(pred)) / max(abs(x$importance)))
   #   for(i in 1:nrow(x$importance)) segments(x0 = 0, y0= 0, x=x$importance[i,1]*scale_factor, y1 =x$importance[i,2]*scale_factor, col = "red", lwd = 2)

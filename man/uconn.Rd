@@ -13,7 +13,7 @@ uconn(
   architecture = c(50, 20, 10),
   latent_dim = 2L,
   response = c("binary", "regression"),
-  KLD_weight = 5
+  KLD_weight = 1
 )
 }
 \arguments{
